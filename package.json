@@ -1,4 +1,5 @@
 {
+  "name": "graphql-server",
   "private": true,
   "license": "MIT",
   "repository": {
