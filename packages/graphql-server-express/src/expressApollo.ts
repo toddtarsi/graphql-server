@@ -20,16 +20,16 @@ export function graphqlExpress(options: GraphQLOptions | ExpressGraphQLOptionsFu
   if (!options) {
     throw new Error('Apollo Server requires options.');
   }
-
   if (arguments.length > 1) {
     // TODO: test this
     throw new Error(`Apollo Server expects exactly one argument, got ${arguments.length}`);
   }
 
+  const isDerivedOptions = typeof options === 'function';
   return (req: express.Request, res: express.Response, next): void => {
     runHttpQuery([req, res], {
       method: req.method,
-      options: typeof options === 'function' ? options(req, res) : options,
+      options: isDerivedOptions ? options(req, res) : options,
       query: req.method === 'POST' ? req.body : req.query,
     }).then((gqlResponse) => {
       res.setHeader('Content-Type', 'application/json');
