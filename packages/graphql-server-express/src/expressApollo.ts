@@ -29,7 +29,7 @@ export function graphqlExpress(options: GraphQLOptions | ExpressGraphQLOptionsFu
   return (req: express.Request, res: express.Response, next): void => {
     runHttpQuery([req, res], {
       method: req.method,
-      options: options,
+      options: typeof options === 'function' ? options(req, res) : options,
       query: req.method === 'POST' ? req.body : req.query,
     }).then((gqlResponse) => {
       res.setHeader('Content-Type', 'application/json');
